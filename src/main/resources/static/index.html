@@ -58,42 +58,48 @@
         justify-content: center;
         flex-direction: column;
       }
+      #image-preview {
+        border: 1px solid #ccc;
+        width: 100%;
+        height: 100%;
+        max-width: 200px;
+        max-height: 200px;
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center center;
+      }
+
     </style>
   </head>
 
   <body>
     <div class="container">
-      <div class="title">
-        <img
-          class="title-logo"
-          src="https://static-index-4gtuqm3bfa95c963-1304825656.tcloudbaseapp.com/official-website/favicon.svg"
-        />
-        <h1 style="display: inline; margin-bottom: 48px;">欢迎使用微信云托管</h1>
-      </div>
+<!--      <div class="title">-->
+<!--        <img-->
+<!--          class="title-logo"-->
+<!--          src="https://static-index-4gtuqm3bfa95c963-1304825656.tcloudbaseapp.com/official-website/favicon.svg"-->
+<!--        />-->
+<!--        <h1 style="display: inline; margin-bottom: 48px;">欢迎使用微信云托管</h1>-->
+<!--      </div>-->
       <div style="text-align: center">
-        <p class="count-text">当前计数：<span class="count-number"></span></p>
-        <div
-          style="display: flex; justify-content: center; margin-bottom: 80px"
-        >
-          <a class="btn btn-success btn-lg count-button" style="background: #07C160; border: 0;" onclick="set('inc')"
-            >计数+1</a
-          >
-          <a
-            class="btn btn-outline-success btn-lg count-button"
-            style="background: rgba(0,0,0,0.03); color: #07C160; border: 0;"
-            onclick="set('clear')"
-            >清零</a
-          >
+<!--        <p class="count-text">当前计数：<span class="count-number"></span></p>-->
+<!--        <div-->
+<!--          style="display: flex; justify-content: center; margin-bottom: 80px"-->
+<!--        >-->
+<!--          <a class="btn btn-success btn-lg count-button" style="background: #07C160; border: 0;" onclick="set('inc')"-->
+<!--            >计数+1</a-->
+<!--          >-->
+<!--          <a-->
+<!--            class="btn btn-outline-success btn-lg count-button"-->
+<!--            style="background: rgba(0,0,0,0.03); color: #07C160; border: 0;"-->
+<!--            onclick="set('clear')"-->
+<!--            >清零</a-->
+<!--          >-->
+<!--        </div>-->
+        <div class="container">
+          <label>请选择一个图像文件：</label>
+          <input type="file" id="file_input" multiple/>
         </div>
-        <small
-          class="text-black-50"
-          style="display: flex; justify-content: center; margin-bottom: 16px"
-          >扫码加入微信云托管用户群</small
-        >
-        <img
-          class="qrcode middle"
-          src="https://qcloudimg.tencent-cloud.cn/raw/89b46988d3cd73d8a56e76a1b82bb377.png"
-        />
       </div>
     </div>
   </body>
@@ -127,6 +133,50 @@
           $(".count-number").html(res.data);
         }
       });
+    }
+    window.onload = function() {
+      var input = document.getElementById("file_input");
+      var result, div;
+
+      if (typeof FileReader === 'undefined') {
+        result.innerHTML = "抱歉，你的浏览器不支持 FileReader";
+        input.setAttribute('disabled', 'disabled');
+      } else {
+        input.addEventListener('change', readFile, false);
+      }
+
+      // handler
+      function readFile() {
+        for (var i = 0; i < this.files.length; i++) {
+          if (!input['value'].match(/.jpg|.gif|.png|.bmp/i)) {　　//判断上传文件格式
+            return alert("上传的图片格式不正确，请重新选择") < br >
+          }
+          var reader = new FileReader();
+          reader.readAsDataURL(this.files[i]);
+          reader.onload = function (e) {
+            result = '<div id="result"><img src="' + this.result + '" alt=""/></div>';
+            div = document.createElement('div');
+            div.innerHTML = result;
+            document.getElementById('body').appendChild(div);  　　//插入dom树                      <br>　　　　　　　　　　}
+          }
+        }
+      }
+    }
+    function readFile(){
+      var fd = new FormData();
+      for(var i=0;i<this.files.length;i++) {
+        var reader = new FileReader();
+        reader.readAsDataURL(this.files[i]);
+        fd.append(i, this.files[i]);
+      }
+      $.ajax({
+        url : '',
+        type : 'post',
+        data : fd,
+        success : function(data){
+          console.log(data)
+        }
+      })
     }
   </script>
 </html>

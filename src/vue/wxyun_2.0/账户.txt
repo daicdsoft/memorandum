@@ -1,0 +1,5 @@
+mysql: root  20220312
+vmware: test  20220312
+
+docker网站 daicd dai@20220312
+服务器 120.48.26.114  root dai@20220312
