@@ -1,11 +1,13 @@
 server:
   port: 80
-
+MYSQL_ADDRESS: localhost:3306
+MYSQL_USERNAME: root
+MySQL_PASSWORD: 20220312
 
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${MYSQL_ADDRESS}/${MYSQL_DATABASE:springboot_demo}
+    url: jdbc:mysql://localhost:3308/sweet_memo
     username: ${MYSQL_USERNAME}
     password: ${MySQL_PASSWORD}
   mvc:
