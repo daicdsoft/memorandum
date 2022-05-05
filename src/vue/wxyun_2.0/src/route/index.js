@@ -2,6 +2,8 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import upload from "@/components/Upload.vue";
 import picture from "@/components/picture/Picture.vue";
+import home from "@/components/home/Home.vue";
+import login from "@/components/login/Login.vue";
 
 
 Vue.use(Router)
@@ -9,37 +11,52 @@ Vue.use(Router)
 // Router.prototype.push = function push (location) {
 //     return originalPush.call(this, location).catch(err => err)
 // }
-export default new Router({
+const router = new Router({
 //去掉url上的#
     mode: 'history',
-    routes: [{
-        path: '/upload',
-        name: 'upload',
-        component: upload
-    },
+    routes: [
+        // {
+        //     path:'/',
+        //     name:'login',
+        //     redirect:login
+        // },
         {
-            path: '/view',
-            name: 'view',
-            component: picture,
-            // children: [{
-            //     path: '/Vehicleinformation',
-            //     name: 'Vehicleinformation',
-            //     component: resolve => require(['../views/home/Vehicleinformation'], resolve)
-            // },
-            //     {
-            //         path: '/Vehiclerental',
-            //         name: 'Vehiclerental',
-            //         component: resolve => require(['../views/home/Vehiclerental'], resolve)
-            //     },
-            //     {
-            //         path: '/',
-            //         name: 'homepage',
-            //         component: resolve => require(['../views/home/homepage'], resolve)
-            //     }, {
-            //         path: '/video',
-            //         name: 'video',
-            //         component: resolve => require(['../views/home/video.vue'], resolve)
-            //     }
-            // ]
-        }]
+            path:'/',
+            name:'login',
+            component:login
+        },
+        {
+            path: '/home',
+            name: 'home',
+            component: home,
+            children:[{
+                path: '/upload',
+                name: 'upload',
+                component: upload
+            },
+                {
+                    path: '/view',
+                    name: 'view',
+                    component: picture,
+                },]
+        },
+
+        ]
 })
+
+router.beforeEach((to, from, next) => {
+    console.log("route to", to.path);
+    if ("这里判断是不是开发环境") {
+        //开发环境下，直接路由
+        next();
+    } else {
+        if (to.path === "/") {
+            //登录页面
+            next(`/login`);
+        } else {
+            next();
+        }
+    }
+});
+
+export default router
