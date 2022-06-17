@@ -13,6 +13,7 @@ import Upload from './components/Upload.vue'
 import Picture from './components/picture/Picture.vue'
 import Home from './components/home/Home.vue'
 import Login from './components/login/Login.vue'
+import axois from './http/http.js'
 
 export default {
   name: 'App',
@@ -21,6 +22,41 @@ export default {
     Picture,
     Home,
     Login
+  },
+  data() {
+    return {
+    }
+  },
+  mounted() {
+    // 关闭浏览器执行退出接口--
+    // onUnload方法是在关闭窗口之后执行
+    // onbeforeUnload方法是在关闭窗口之前执行
+    window.addEventListener('beforeunload', e => this.beforeunloadHandler(e))
+    window.addEventListener('unload', e => this.unloadHandler(e))
+  },
+  destroyed() {
+    // 关闭浏览器执行退出接口
+    window.removeEventListener('beforeunload', e => this.beforeunloadHandler(e))
+    window.removeEventListener('unload', e => this.unloadHandler(e))
+  },
+  methods: {
+    // 关闭窗口之前执行
+    async beforeunloadHandler(e) {
+      await this.clearLogin() // 退出登录接口
+      // this._beforeUnload_time = new Date().getTime()
+      // console.log('this._beforeUnload_time：', this._beforeUnload_time)
+      window.close()
+    },
+    // 关闭窗口之后执行--暂时用不到
+    unloadHandler() {
+    },
+    // 退出登录接口
+    clearLogin(e){
+      axois.postWithNoParam("user/loginOut").then(x => {
+        console.log("login out")
+        console.log(x)
+      })
+    }
   }
 }
 </script>

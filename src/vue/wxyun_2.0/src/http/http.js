@@ -4,7 +4,7 @@ import qs from 'qs'
 axios.defaults.timeout = 5000;                        //响应时间
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';        //配置请求头
 axios.defaults.headers.put['Content-Type'] ='application/json;charset=utf-8';        //配置请求头
-axios.defaults.baseURL = '/';   //配置接口地址
+axios.defaults.baseURL = 'http://127.0.0.1:8881';   //配置接口地址
 
 //POST传参序列化(添加请求拦截器)
 axios.interceptors.request.use((config) => {
@@ -43,7 +43,21 @@ axios.interceptors.response.use((res) =>{
 //返回一个Promise(发送post请求)
 export function post(url, params) {
     return new Promise((resolve, reject) => {
-        axios.post(url, params)
+        axios.post(axios.defaults.baseURL + url, params)
+            .then(response => {
+                resolve(response);
+            }, err => {
+                reject(err);
+            })
+            .catch((error) => {
+                reject(error)
+            })
+    })
+}
+//返回一个Promise(发送post请求)
+export function postWithNoParam(url) {
+    return new Promise((resolve, reject) => {
+        axios.post(axios.defaults.baseURL + url)
             .then(response => {
                 resolve(response);
             }, err => {
@@ -57,7 +71,7 @@ export function post(url, params) {
 // 返回一个Promise(发送put请求)
 export function put(url, params) {
     return new Promise((resolve, reject) => {
-        axios.put(url, params)
+        axios.put(axios.defaults.baseURL + url, params)
             .then(response => {
                 resolve(response);
             }, err => {
@@ -71,7 +85,7 @@ export function put(url, params) {
 // 返回一个Promise(发送get请求)
 export function get(url, param) {
     return new Promise((resolve, reject) => {
-        axios.get(url, {params: param})
+        axios.get(axios.defaults.baseURL + url, {params: param})
             .then(response => {
                 resolve(response)
             }, err => {
@@ -85,5 +99,6 @@ export function get(url, param) {
 export default {
     post,
     put,
-    get
+    get,
+    postWithNoParam
 }

@@ -13,7 +13,7 @@ Vue.use(Router)
 // }
 const router = new Router({
 //去掉url上的#
-    mode: 'history',
+//     mode: 'history',
     routes: [
         // {
         //     path:'/',

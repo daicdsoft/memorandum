@@ -2,8 +2,9 @@
   <div>
     <div style="padding-bottom: 50px" >图片上传</div>
     <el-upload
-        action="https://192.168.1.8:8080/api/picture/upload"
+        action="http://127.0.0.1:8881/api/picture/upload"
         list-type="picture-card"
+        name="file"
         :on-preview="handlePictureCardPreview"
         :on-remove="handleRemove">
       <i class="el-icon-plus"></i>
